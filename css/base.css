@@ -1,0 +1,419 @@
+/* Seam Transitions · the page frame, the studio page, and what the seams share. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --dark: #111;
+  --paper: #fff;
+  --ink: #111;
+  --font: 'Kode Mono', ui-monospace, monospace;
+  --gutter: 24px;
+  --hero: 100vh; /* the hero fills the screen; index.js reads its real height */
+  font-size: 12px;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--dark);
+}
+
+body {
+  color: var(--ink);
+  font-family: var(--font);
+  line-height: 1.4;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p,
+h1,
+h2,
+h3,
+ul {
+  margin: 0;
+}
+
+/* Until the fonts and photographs are in: a hairline bar, then the page. */
+.js .loading::before,
+.js .loading::after {
+  content: '';
+  position: fixed;
+  z-index: 1000;
+}
+
+.js .loading::before {
+  inset: 0;
+  background: var(--dark);
+}
+
+.js .loading::after {
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 1px;
+  margin-left: -60px;
+  background: var(--paper);
+  transform-origin: 0 50%;
+  animation: loading 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes loading {
+  from {
+    transform: scaleX(0.1);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Frame ------------------------------------------------------------------ */
+
+/* Codrops' frame, over the hero, in the hero's own colour, and it scrolls
+   away with it, so the seams never pass under it. Along the top: the
+   title, links, tags and variations. Along the bottom: the credits on the
+   left and, on the live site, the sponsor on the right (#cdawrap, put in
+   the frame by Codrops' sponsor script). The bottom row is where the seams
+   work, so index.js fades it out (--foot) before they get there. */
+.frame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    'title links tags demos'
+    '. . . .'
+    'credits credits credits sponsor';
+  gap: 8px 32px;
+  align-items: start;
+  padding: var(--gutter);
+  pointer-events: none;
+}
+
+.frame a {
+  pointer-events: auto;
+}
+
+.frame__title {
+  grid-area: title;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.frame__links {
+  grid-area: links;
+}
+
+.frame__tags {
+  grid-area: tags;
+}
+
+.frame__links,
+.frame__tags {
+  display: flex;
+  gap: 12px;
+}
+
+.frame__links a:hover,
+.frame__tags a:hover,
+.frame__demo:hover {
+  opacity: 0.6;
+}
+
+.frame__tags {
+  opacity: 0.75;
+}
+
+/* The variations, numbered. */
+.frame__demos {
+  grid-area: demos;
+  display: grid;
+  grid-template-columns: auto repeat(10, auto);
+  gap: 2px 10px;
+  justify-content: end;
+}
+
+.frame__demos-label {
+  opacity: 0.75;
+}
+
+.frame__demo {
+  font-variant-numeric: tabular-nums;
+}
+
+.frame__demo--current {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.frame__credits,
+.frame #cdawrap {
+  align-self: end;
+  opacity: var(--foot, 1);
+}
+
+.frame__credits {
+  grid-area: credits;
+}
+
+.frame__credits a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.frame__credits a:hover {
+  opacity: 0.6;
+}
+
+.frame #cdawrap {
+  grid-area: sponsor;
+  justify-self: end;
+  max-width: 300px;
+  text-align: right;
+}
+
+.frame--clear .frame__credits,
+.frame--clear #cdawrap {
+  visibility: hidden;
+}
+
+/* The studio page ------------------------------------------------------------- */
+
+/* The hero: a photograph in daylight across the whole screen, each page's
+   chosen for its seam, and the studio's name on it in white. Its lower
+   quarter is kept clear: that's where the seams work. Dark until the
+   photograph is in. */
+.hero {
+  position: relative;
+  height: var(--hero);
+  overflow: hidden;
+  background: var(--dark);
+  color: var(--paper);
+}
+
+/* The photograph is drawn as it is (shaders draw it the same, glsl.js,
+   photo()). Its box can reach below the hero by --bleed, cropped by it, so
+   a seam can show the rest of the picture under the page (Ink, Surface). */
+.hero__img {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: calc(100% + var(--bleed, 0px));
+  object-fit: cover;
+}
+
+/* A veil over the photograph so the white type reads: darkest at the top,
+   behind the frame and the name, lighter towards the bottom, where the
+   page comes in. index.js reads the same numbers for the seams, which
+   draw the photograph under the same veil. */
+.hero {
+  --veil-top: 0.5;
+  --veil-mid: 0.38;
+  --veil-stop: 0.62; /* where --veil-mid is, 0 to 1 down the hero */
+  --veil-bottom: 0.12;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgb(0 0 0 / var(--veil-top)),
+    rgb(0 0 0 / var(--veil-mid)) calc(var(--veil-stop) * 100%),
+    rgb(0 0 0 / var(--veil-bottom))
+  );
+}
+
+.hero__content {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: 1fr auto 1fr;
+  column-gap: var(--gutter);
+  padding: 120px var(--gutter) 28vh;
+}
+
+.hero__title {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  font-size: clamp(64px, 19vw, 300px);
+  font-weight: 500;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+}
+
+.hero__meta {
+  grid-column: 1 / 3;
+  grid-row: 1;
+  align-self: end;
+  padding-bottom: 24px;
+}
+
+.hero__note {
+  grid-column: 7 / -1;
+  grid-row: 3;
+  justify-self: end;
+  padding-top: 24px;
+  text-align: right;
+  opacity: 0.75;
+}
+
+/* The seam: a box straddling the hero's bottom edge, `--above` into the
+   hero and `--below` into the page under it. Each seam draws in it on a
+   canvas; it never takes the pointer. */
+.seam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--hero) - var(--above, 0px));
+  height: calc(var(--above, 0px) + var(--below, 0px));
+  z-index: 5;
+  pointer-events: none;
+}
+
+.seam canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The page under the hero: white, the studio's introduction and its
+   latest work. Its top is left open: the seam plays out there. */
+.next {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 34vh var(--gutter) var(--gutter); /* the footer as close to the bottom as the frame is to the top */
+  overflow-x: clip; /* the marquee runs to the screen's edges, not past them */
+}
+
+.next__intro {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: baseline;
+}
+
+.next__label {
+  grid-column: 1 / 3;
+  opacity: 0.5;
+}
+
+.next__text {
+  grid-column: 3 / -1;
+  font-size: clamp(20px, 2.2vw, 32px);
+  line-height: 1.15;
+}
+
+/* The latest work: six 4:5 photographs in a tight row, captions under
+   them, right-aligned. With motion it's a marquee: index.js adds a second
+   set after the first and `.projects--marquee`, which lines them all up
+   at the same size, `--across` to the screen. */
+.projects {
+  --across: 6;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 60px 7px;
+  margin: 20vh 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.projects img {
+  display: block;
+  width: 100%;
+  height: auto; /* the ratio below, not the height="…" in the markup */
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: #eee;
+}
+
+.projects--marquee {
+  display: flex;
+  gap: 7px;
+  width: max-content;
+}
+
+.projects--marquee li {
+  flex: none;
+  width: calc((100vw - 2 * var(--gutter) - (var(--across) - 1) * 7px) / var(--across));
+}
+
+.projects p {
+  margin-top: 6px;
+  text-align: right;
+}
+
+.projects span {
+  opacity: 0.5;
+}
+
+.next__foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24vh;
+}
+
+/* Small screens ------------------------------------------------------------ */
+
+@media (max-width: 760px) {
+  :root {
+    --gutter: 16px;
+  }
+
+  .frame {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto) 1fr auto auto;
+    grid-template-areas: 'title' 'links' 'tags' 'demos' '.' 'credits' 'sponsor';
+  }
+
+  .frame #cdawrap {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .frame__demos {
+    justify-content: start;
+  }
+
+  .hero__content {
+    padding-top: 180px;
+  }
+
+  .hero__meta {
+    grid-column: 1 / -1;
+  }
+
+  .hero__note {
+    grid-column: 1 / -1;
+  }
+
+  .next__intro {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .next__label,
+  .next__text {
+    grid-column: 1;
+  }
+
+  .projects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    --across: 2.4;
+  }
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seam Transitions | Demo 1 | Codrops</title>
+    <meta name="description" content="As the page scrolls up, a photograph of misty pines bleeds into it like ink into wet paper, showing more forest under the page. A WebGL scroll transition with GSAP." />
+    <meta name="keywords" content="ink effect, image reveal, scroll transition, section transition, scroll animation, WebGL, GLSL shaders, GSAP, ScrollTrigger" />
+    <link rel="canonical" href="https://tympanus.net/Demos/SeamTransitions/" />
+    <meta name="theme-color" content="#111" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Codrops" />
+    <meta property="og:title" content="Seam Transitions | Demo 1 | Codrops" />
+    <meta property="og:description" content="As the page scrolls up, a photograph of misty pines bleeds into it like ink into wet paper, showing more forest under the page. A WebGL scroll transition with GSAP." />
+    <meta property="og:url" content="https://tympanus.net/Demos/SeamTransitions/" />
+    <meta property="og:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@codrops" />
+    <meta name="twitter:title" content="Seam Transitions | Demo 1 | Codrops" />
+    <meta name="twitter:description" content="As the page scrolls up, a photograph of misty pines bleeds into it like ink into wet paper, showing more forest under the page. A WebGL scroll transition with GSAP." />
+    <meta name="twitter:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <link rel="icon" type="image/svg+xml" href="https://tympanus.net/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="https://tympanus.net/favicon/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <script>
+      document.documentElement.className = 'js';
+    </script>
+    <!-- Added on the live server only, leave commented out in the repo -->
+    <!--script src="//tympanus.net/codrops/adpacks/analytics.js"></script-->
+  </head>
+
+  <body class="demo-1 loading" data-seam="ink">
+    <div id="smooth-wrapper">
+      <main id="smooth-content">
+        <section class="hero">
+          <header class="frame">
+            <h1 class="frame__title">Seam Transitions</h1>
+            <nav class="frame__links">
+              <a href="https://tympanus.net/codrops/hub/">All demos</a>
+              <a href="https://github.com/codrops/SeamTransitions">GitHub</a>
+            </nav>
+            <nav class="frame__tags">
+              <a href="https://tympanus.net/codrops/hub/tag/scroll/">#scroll</a>
+              <a href="https://tympanus.net/codrops/hub/tag/webgl/">#webgl</a>
+              <a href="https://tympanus.net/codrops/hub/tag/gsap/">#gsap</a>
+            </nav>
+            <nav class="frame__demos">
+              <span class="frame__demos-label">Variations</span>
+              <span class="frame__demo frame__demo--current">01</span>
+              <a class="frame__demo" href="index2.html">02</a>
+              <a class="frame__demo" href="index3.html">03</a>
+              <a class="frame__demo" href="index4.html">04</a>
+              <a class="frame__demo" href="index5.html">05</a>
+              <a class="frame__demo" href="index6.html">06</a>
+              <a class="frame__demo" href="index7.html">07</a>
+              <a class="frame__demo" href="index8.html">08</a>
+              <a class="frame__demo" href="index9.html">09</a>
+              <a class="frame__demo" href="index10.html">10</a>
+            </nav>
+            <p class="frame__credits">Inspired by <a href="https://mosaic.flabbergast.agency/">Mosaic</a> and <a href="https://tympanus.net/codrops/?p=124140">Jesper Landberg</a></p>
+          </header>
+          <img class="hero__img" src="img/hero-ink.jpg" width="1376" height="768" alt="A misty mountain ridge, dark pines fading up into pale fog" />
+          <div class="hero__content">
+            <p class="hero__meta">Architecture &amp; landscape<br />Lisbon · Oslo</p>
+            <h2 class="hero__title">Strata</h2>
+            <p class="hero__note">Selected work<br />2019 — 2026</p>
+          </div>
+        </section>
+        <div class="seam" aria-hidden="true"></div>
+        <section class="next">
+          <div class="next__intro">
+            <p class="next__label">(01) Studio</p>
+            <p class="next__text">We design buildings that settle into their ground: houses, chapels, baths and schools, cut from the stone, timber and light of their place.</p>
+          </div>
+          <ul class="projects">
+            <li>
+              <img src="img/project-1.jpg" width="896" height="1200" alt="A small brick house with a vaulted roof in a dry meadow" />
+              <p>Kiln House <span>2025</span></p>
+            </li>
+            <li>
+              <img src="img/project-2.jpg" width="896" height="1200" alt="A timber pavilion on slender columns among tall grasses" />
+              <p>Sorrel Pavilion <span>2024</span></p>
+            </li>
+            <li>
+              <img src="img/project-3.jpg" width="896" height="1200" alt="A basalt chapel on a pale gravel hill" />
+              <p>Basalt Chapel <span>2024</span></p>
+            </li>
+            <li>
+              <img src="img/project-4.jpg" width="896" height="1200" alt="Sea baths: a concrete deck and steps down into a tidal pool" />
+              <p>Harbour Baths <span>2023</span></p>
+            </li>
+            <li>
+              <img src="img/project-5.jpg" width="896" height="1200" alt="A whitewashed courtyard around an old olive tree" />
+              <p>Olive Court <span>2022</span></p>
+            </li>
+            <li>
+              <img src="img/project-6.jpg" width="896" height="1200" alt="A long low brick and timber school on flat green land" />
+              <p>Lowland School <span>2021</span></p>
+            </li>
+          </ul>
+          <footer class="next__foot">
+            <a href="mailto:studio@strata.example">studio@strata.example</a>
+            <span>(02) Projects</span>
+          </footer>
+        </section>
+      </main>
+    </div>
+    <script src="js/gsap.min.js"></script>
+    <script src="js/ScrollTrigger.min.js"></script>
+    <script src="js/ScrollSmoother.min.js"></script>
+    <script src="js/SplitText.min.js"></script>
+    <script type="module" src="js/index.js"></script>
+    <!-- Added on the live server only, leave commented out in the repo -->
+    <!--script src="https://tympanus.net/codrops/adpacks/cda_sponsor.js"></script-->
+  </body>
+</html>
