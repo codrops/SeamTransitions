@@ -240,10 +240,12 @@ const start = async () => {
   }
 };
 
-// Open the page once its fonts and photographs are in, so nothing moves
-// into place in view.
+// Open the page once its fonts and photographs are in and its seam has
+// started, so nothing moves into place in view: some seams change the
+// hero's layout as they start (Ink and Surface make the photograph's box
+// taller, to carry the picture on under the page). If anything fails, the
+// page opens anyway.
 const ready = [document.fonts.ready, ...[...document.images].map((img) => img.decode().catch(() => {}))];
-Promise.all(ready).then(() => {
-  document.body.classList.remove('loading');
-  start();
-});
+Promise.all(ready)
+  .then(start)
+  .finally(() => document.body.classList.remove('loading'));
