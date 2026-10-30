@@ -1,11 +1,12 @@
 // 05 Contour
 //
 // The photograph is surveyed as the page comes up over it. From the edge
-// up, it gives way to a contour map of itself, drawn on the white page in
-// lines of its own colours deepened with ink, every fifth line heavier, as
-// on a survey drawing. The map floods up into the photograph like rising
-// water, through its dark places first, with a heavy line at the
-// waterline; below the edge it runs on into the page and fades out. While
+// up, it gives way to a contour map of itself, drawn on the white page as
+// on a survey sheet: brown contours, every fifth one heavier and darker,
+// with spot heights marked here and there as the map reaches them. The
+// map floods up into the photograph like rising water, through its dark
+// places first, with a heavy line at the waterline; below the edge it runs
+// on into the page and fades out. While
 // the page scrolls the contours flow, each line sliding on towards the
 // next; when it stops, they hold. Scroll back and the water drains away
 // until the photograph is whole again.
@@ -18,16 +19,14 @@ import Strip from '../gl/Strip.js';
 
 export default function contour(seam) {
   const { room } = seam;
-  const ink = gsap.utils.splitColor(getComputedStyle(document.documentElement).getPropertyValue('--ink').trim());
 
   const strip = new Strip(seam, {
     above: room.up,
     below: () => Math.min(room.down(), 220),
-    uniforms: { uInk: ink.map((c) => c / 255) },
     dpr: 2,
     fragment: /* glsl */ `
-      uniform vec3 uInk; // the page's text colour
-
+      const vec3 BROWN = vec3(0.62, 0.43, 0.27); // a survey map's contours
+      const vec3 INDEX = vec3(0.42, 0.27, 0.15); // every fifth one, and the waterline
       const float LINES = 10.0; // contours across the photograph's range of tones
       const float FLOW = 240.0; // px the seam travels while each contour slides on to the next
 
@@ -42,9 +41,7 @@ export default function contour(seam) {
         vec2 px = vPx;
         float d = px.y - uEdge; // below the edge, positive
         float below = uSize.y - uEdge; // the room below it
-        vec3 colour = broad(px);
-        float tone = dot(colour, vec3(0.299, 0.587, 0.114));
-        colour *= 1.0 - veil(px.y); // drawn under the hero's veil, as the page draws it
+        float tone = dot(broad(px), vec3(0.299, 0.587, 0.114));
 
         // Where the map is. Above the edge: wherever the water has risen
         // to, up from the edge and into the dark places first. Below it:
@@ -71,21 +68,95 @@ export default function contour(seam) {
           outColor = vec4(0.0);
           return;
         }
-        float weight = mod(floor(g + 0.5), 5.0) == 0.0 ? 1.1 : 0.45;
+        float index = mod(floor(g + 0.5), 5.0) == 0.0 ? 1.0 : 0.0;
+        float weight = mix(0.45, 1.1, index);
         float line = 1.0 - smoothstep(weight - 0.5, weight + 0.5, dist);
 
         // The waterline, heaviest.
-        if (d < 0.0) line = max(line, 1.0 - smoothstep(1.2, 2.2, waterline));
+        float shoreline = d < 0.0 ? 1.0 - smoothstep(1.2, 2.2, waterline) : 0.0;
+        index = max(index, shoreline);
+        line = max(line, shoreline);
 
-        // Lines in the photograph's colour deepened with ink, thinning out
-        // into the page towards wherever the map ends, so it never ends in
-        // a line, on white (over the page, its own white).
+        // Survey colours: the contours in brown, every fifth one and the
+        // waterline darker, thinning out into the page towards wherever the
+        // map ends, so it never ends in a line, on white (over the page, its
+        // own white).
         float thin = clamp(d / min(below, depth), 0.0, 1.0);
         line *= 1.0 - thin * thin;
-        outColor = vec4(mix(uPaper, mix(colour, uInk, 0.5), line), 1.0);
+        outColor = vec4(mix(uPaper, mix(BROWN, INDEX, index), line), 1.0);
       }`,
   });
 
-  seam.onChange(() => strip.render());
-  strip.render();
+  // Spot heights, as a survey sheet marks them: a dot and the height in
+  // metres at a few points, in the map's brown, on a canvas over the map.
+  // A height follows the photograph's tone where it stands (the brighter,
+  // the higher, from 120 to 480 m; below the edge, its bottom row's, give or
+  // take), and shows once the map has reached it, never before the page
+  // moves.
+  const marks = document.createElement('canvas');
+  marks.style.cssText = 'position: absolute; inset: 0; width: 100%; height: 100%;';
+  seam.el.append(marks);
+  const pen = marks.getContext('2d');
+  let spots = [];
+  let dpr = 1;
+
+  const place = () => {
+    const width = seam.el.clientWidth;
+    const height = seam.el.clientHeight;
+    const above = Math.round(room.up());
+    dpr = Math.min(2, devicePixelRatio || 1);
+    marks.width = Math.round(width * dpr);
+    marks.height = Math.round(height * dpr);
+    const tones = seam.photo.colours(seam.hero.offsetHeight - above, above, 24, 8);
+    const tone = (col, row) => tones(col, row).reduce((sum, c) => sum + c, 0) / 765;
+    spots = [];
+    for (let x = gsap.utils.random(60, 160); x < width - 60; x += gsap.utils.random(180, 300)) {
+      const y = gsap.utils.random(
+        above * 0.4,
+        Math.min(height - 40, above + (height - above) * 0.6),
+      );
+      const col = Math.min(23, Math.floor((x / width) * 24));
+      const light = y < above ? tone(col, Math.floor((y / above) * 8)) : tone(col, 7);
+      const metres = 120 + 360 * light + (y < above ? 0 : gsap.utils.random(-20, 20));
+      spots.push({ x, y, height: Math.round(gsap.utils.clamp(120, 480, metres)) });
+    }
+  };
+
+  const mark = () => {
+    const above = Math.round(room.up());
+    const below = seam.el.clientHeight - above;
+    const level = seam.progress * 1.4 - 0.25;
+    pen.setTransform(1, 0, 0, 1, 0, 0);
+    pen.clearRect(0, 0, marks.width, marks.height);
+    pen.setTransform(dpr, 0, 0, dpr, 0, 0);
+    pen.font = "500 10px 'Plus Jakarta Sans'";
+    pen.textBaseline = 'middle';
+    for (const { x, y, height } of spots) {
+      // How far the map has come past the spot: up from the edge, its
+      // waterline; down from it, its least depth (a little later than the
+      // lines, never before them).
+      const past =
+        y < above
+          ? (level - (above - y) / above - 0.05) / 0.08
+          : (seam.progress * 1.6 * below * 0.7 - (y - above) - 8) / 20;
+      const shown = gsap.utils.clamp(0, 1, past);
+      if (!shown) continue;
+      pen.globalAlpha = shown;
+      pen.fillStyle = 'rgb(107, 69, 38)';
+      pen.beginPath();
+      pen.arc(x, y, 1.6, 0, Math.PI * 2);
+      pen.fill();
+      pen.fillText(String(height), x + 5, y);
+    }
+    pen.globalAlpha = 1;
+  };
+
+  const render = () => {
+    strip.render();
+    mark();
+  };
+  place();
+  addEventListener('resize', () => (place(), mark()));
+  seam.onChange(render);
+  render();
 }

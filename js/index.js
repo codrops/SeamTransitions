@@ -1,12 +1,20 @@
 // Seam Transitions
 //
-// Every page is the same studio home page: a hero above the fold (a
-// photograph in daylight, chosen for the page's seam), a white page under
-// it. Where the two meet is the seam, and each page animates it
-// differently as the white page scrolls up over the hero. <body data-seam="…"> names the page's seam;
-// this file sets up smooth scrolling, brings the studio's introduction in
-// line by line, turns its latest work into a marquee, works out where the
-// seam is and how fast the page moves through it, and loads that one seam.
+// Every page is the home page of a studio whose work the page's seam acts
+// out: a hero above the fold (a photograph in daylight), a white page under
+// it. Ink is Canopy, bringing forest back to cleared hills; Crumble,
+// Vidrado, restoring Lisbon's tiles; Typeset, Stacks, a library set in a
+// Whitman poem; Contour, Socalco, terraces that follow the hill; Marble,
+// Ebru, a marbling atelier; Mist, Bruma, catching water from fog;
+// Craquelure, Mend 金, a kintsugi studio; Roots, Soak, letting rain soak in
+// where trees can drink it; Sediment, Baldio, a village keeping its hill
+// from a mine; Fray, Manta, a blanket mill; Shavings, Grain, a furniture
+// workshop. Where the hero and the page meet is the seam, and each page
+// animates it differently as the white page scrolls up over the hero.
+// <body data-seam="…"> names the page's seam; this file sets up smooth
+// scrolling, brings the studio's introduction in line by line, turns its
+// latest work into a marquee, works out where the seam is and how fast the
+// page moves through it, and loads that one seam.
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText); // ScrollSmoother runs on ScrollTrigger
 
@@ -14,7 +22,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText); // ScrollSmoother
 const seams = {
   ink: () => import('./seams/ink.js'),
   crumble: () => import('./seams/crumble.js'),
-  surface: () => import('./seams/surface.js'),
+  fray: () => import('./seams/fray.js'),
   typeset: () => import('./seams/typeset.js'),
   contour: () => import('./seams/contour.js'),
   marble: () => import('./seams/marble.js'),
@@ -22,6 +30,7 @@ const seams = {
   craquelure: () => import('./seams/craquelure.js'),
   roots: () => import('./seams/roots.js'),
   sediment: () => import('./seams/sediment.js'),
+  shavings: () => import('./seams/shavings.js'),
 };
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,7 +49,10 @@ const MARGIN = 32; // px a seam keeps clear of the text either side
 // the top, at the middle stop, where that stop is (0 to 1 down the hero),
 // and at the bottom; `veil.at(t)` is how dark it is at t. A seam that draws
 // the photograph darkens it the same, so it matches the page. `photo`
-// helps a seam draw the hero's photograph itself (see below).
+// helps a seam draw the hero's photograph itself (see below). A seam whose
+// module exports `letters` gets the studio's introduction split into
+// letters as well as lines (`.next__char`), and `onSplit` runs whenever
+// it's split again, as its width changes.
 const seam = {
   el: document.querySelector('.seam'),
   hero: document.querySelector('.hero'),
@@ -112,14 +124,19 @@ const seam = {
   },
   room: {
     up: () => {
-      const note = seam.hero.querySelector('.hero__note');
-      return Math.max(0, seam.hero.offsetHeight - (note.offsetTop + note.offsetHeight) - MARGIN);
+      const texts = [...seam.hero.querySelector('.hero__content').children];
+      const last = Math.max(...texts.map((text) => text.offsetTop + text.offsetHeight));
+      return Math.max(0, seam.hero.offsetHeight - last - MARGIN);
     },
     down: () => Math.max(0, seam.next.querySelector('.next__intro').offsetTop - MARGIN),
   },
   listeners: [],
   onChange(fn) {
     this.listeners.push(fn);
+  },
+  splits: [],
+  onSplit(fn) {
+    this.splits.push(fn);
   },
 };
 
@@ -171,35 +188,54 @@ const start = async () => {
   // is a still row, and the seam stays a plain edge.
   if (reduced) return;
 
-  // The frame's bottom row (the credits, and the sponsor on the live
-  // site) sits where the seams work, so it fades out over the first few px
-  // of scroll, before any seam comes up to it, and is hidden once gone, so
-  // its links can't be clicked unseen. It's styled from --foot, so it
-  // reaches the sponsor whenever that arrives.
-  const frame = document.querySelector('.frame');
-  const foot = (self) => {
-    frame.style.setProperty('--foot', 1 - self.progress);
-    frame.classList.toggle('frame--clear', self.progress === 1);
-  };
-  ScrollTrigger.create({ trigger: seam.hero, start: 'top top', end: '+=40', onRefresh: foot, onUpdate: foot });
+  // The page's seam, loaded first: it may want the introduction's letters.
+  const name = document.body.dataset.seam;
+  let module = null;
+  try {
+    module = await seams[name]();
+  } catch (error) {
+    console.warn(`The ${name} seam couldn't load: ${error.message}`);
+  }
 
-  // The studio's introduction comes in line by line as it scrolls into
-  // view, each line rising out of its own mask, and goes back out as it
-  // scrolls back down the screen. `autoSplit` cuts it into lines again
-  // when the width changes where they break, and rebuilds the animation
-  // `onSplit` returns.
+  // The cue to scroll fades out over the first few px of scroll, before
+  // the seam comes up to it.
+  gsap.to('.hero__scroll', {
+    autoAlpha: 0,
+    ease: 'none',
+    scrollTrigger: { trigger: seam.hero, start: 'top top', end: '+=30', scrub: true },
+  });
+
+  // The studio's introduction comes in line by line the first time it
+  // scrolls into view, each line rising out of its own mask, and then
+  // stays. `autoSplit` cuts it into lines again when the width changes
+  // where they break, and rebuilds the animation `onSplit` returns: none
+  // once it has come in, so a resize doesn't play it again. For a seam
+  // that asks, it (and its label) is split into letters too, and the seam
+  // hears about every new split.
+  const letters = Boolean(module?.letters);
+  if (letters) SplitText.create('.next__label', { type: 'chars', charsClass: 'next__char' });
+  let revealed = false;
   SplitText.create('.next__text', {
-    type: 'lines',
+    type: letters ? 'lines, chars' : 'lines',
+    charsClass: 'next__char',
     mask: 'lines',
     autoSplit: true,
-    onSplit: (self) =>
-      gsap.from(self.lines, {
+    onSplit: (self) => {
+      seam.splits.forEach((fn) => fn());
+      if (revealed) return;
+      return gsap.from(self.lines, {
         yPercent: 100,
         duration: 1.1,
         ease: 'power4.out',
         stagger: 0.12,
-        scrollTrigger: { trigger: self.elements[0], start: 'top 85%', toggleActions: 'play none none reverse' },
-      }),
+        scrollTrigger: {
+          trigger: self.elements[0],
+          start: 'top 85%',
+          once: true,
+          onEnter: () => (revealed = true),
+        },
+      });
+    },
   });
 
   // The latest work becomes a marquee the scroll moves right to left. A
@@ -230,21 +266,22 @@ const start = async () => {
     onUpdate: (self) => setX(gsap.utils.wrap(-loop, 0, -self.progress * loop * DRIFT)),
   });
 
-  const name = document.body.dataset.seam;
+  // A seam that can't run (no WebGL 2, say) leaves the plain edge. Fonts
+  // it draws in (`fonts`), which the page itself may not show, are loaded
+  // first.
   try {
-    const { default: init } = await seams[name]();
-    init(seam);
+    await Promise.all((module?.fonts ?? []).map((font) => document.fonts.load(font)));
+    module?.default(seam);
   } catch (error) {
-    // A seam that can't run (no WebGL 2, say) leaves the plain edge.
     console.warn(`The ${name} seam couldn't start: ${error.message}`);
   }
 };
 
 // Open the page once its fonts and photographs are in and its seam has
 // started, so nothing moves into place in view: some seams change the
-// hero's layout as they start (Ink and Surface make the photograph's box
-// taller, to carry the picture on under the page). If anything fails, the
-// page opens anyway.
+// hero's layout as they start (Ink makes the photograph's box taller, to
+// carry the picture on under the page). If anything fails, the page opens
+// anyway.
 const ready = [document.fonts.ready, ...[...document.images].map((img) => img.decode().catch(() => {}))];
 Promise.all(ready)
   .then(start)

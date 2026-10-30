@@ -1,6 +1,6 @@
 // 02 Crumble
 //
-// The bottom of the hero's photograph (a tiled wall) is made of squares
+// The bottom of the hero's photograph (a tiled façade) is made of squares
 // of three sizes: small crumbs along the very edge, bigger blocks above
 // them. As the page scrolls up over it they break off one by one, from the
 // bottom up: each jumps loose with its piece of the picture, spins and
@@ -38,7 +38,10 @@ export default function crumble(seam) {
     const below = Math.round(room.down());
     // The smallest square, and a block of four by four of them; the edge is
     // two rows of blocks deep.
-    const unit = Math.min(Math.round(gsap.utils.clamp(10, 18, width / 80)), Math.floor(room.up() / 8));
+    const unit = Math.min(
+      Math.round(gsap.utils.clamp(10, 18, width / 80)),
+      Math.floor(room.up() / 8),
+    );
     const block = unit * 4;
     const key = [width, below, unit].join();
     if (key === built) return;
@@ -73,7 +76,16 @@ export default function crumble(seam) {
         const half = size / 2;
         [0, half].forEach((dy) => [0, half].forEach((dx) => lay(left + dx, top + dy, half)));
       } else {
-        squares.push({ left, top, size, ...piece(left, top, size), x: 0, y: 0, rotation: 0, opacity: 1 });
+        squares.push({
+          left,
+          top,
+          size,
+          ...piece(left, top, size),
+          x: 0,
+          y: 0,
+          rotation: 0,
+          opacity: 1,
+        });
       }
     };
     for (let top = 0; top < edge; top += block) {
@@ -83,7 +95,8 @@ export default function crumble(seam) {
     // Which squares fall, and in what order: most of those on the edge,
     // fewer and fewer higher up, roughly from the bottom up. They're spread
     // evenly over the scroll, from just after the page starts to move until
-    // the edge nears the top of the screen.
+    // the box's bottom nears the top of the screen, so squares keep breaking
+    // off for as long as any of it is in view.
     const falling = squares
       .map((square) => ({ square, depth: (square.top + square.size / 2) / edge }))
       .filter(({ depth }) => Math.random() < depth ** 2)
@@ -92,7 +105,7 @@ export default function crumble(seam) {
       .map(({ square }) => square);
 
     falling.forEach((square, i) => {
-      square.at = innerHeight * (0.04 + (0.9 * i) / Math.max(1, falling.length - 1));
+      square.at = (innerHeight + below) * (0.04 + (0.9 * i) / Math.max(1, falling.length - 1));
       square.out = false;
 
       // The fall itself: knocked loose with a little upward kick, then

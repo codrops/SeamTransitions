@@ -10,7 +10,7 @@
   --dark: #111;
   --paper: #fff;
   --ink: #111;
-  --font: 'Kode Mono', ui-monospace, monospace;
+  --font: 'Plus Jakarta Sans', system-ui, sans-serif;
   --gutter: 24px;
   --hero: 100vh; /* the hero fills the screen; index.js reads its real height */
   font-size: 12px;
@@ -26,6 +26,7 @@ body {
   color: var(--ink);
   font-family: var(--font);
   line-height: 1.4;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -81,21 +82,21 @@ ul {
 
 /* Codrops' frame, over the hero, in the hero's own colour, and it scrolls
    away with it, so the seams never pass under it. Along the top: the
-   title, links, tags and variations. Along the bottom: the credits on the
-   left and, on the live site, the sponsor on the right (#cdawrap, put in
-   the frame by Codrops' sponsor script). The bottom row is where the seams
-   work, so index.js fades it out (--foot) before they get there. */
+   title, links and tags and, on the live site, the sponsor on the right
+   (#cdawrap, put in the frame by Codrops' sponsor script). Under the title,
+   the variations, in a white box so they can't be missed. Nothing sits low
+   in the hero, where the seams work: the credits are in the footer. */
 .frame {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: grid;
   grid-template-columns: auto auto 1fr auto;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr;
   grid-template-areas:
-    'title links tags demos'
-    '. . . .'
-    'credits credits credits sponsor';
+    'title links tags sponsor'
+    'demos demos demos .'
+    '. . . .';
   gap: 8px 32px;
   align-items: start;
   padding: var(--gutter);
@@ -136,13 +137,19 @@ ul {
   opacity: 0.75;
 }
 
-/* The variations, numbered. */
+/* The variations, numbered, in a white box, the current one filled in. */
 .frame__demos {
   grid-area: demos;
+  justify-self: start;
   display: grid;
-  grid-template-columns: auto repeat(10, auto);
+  grid-template-columns: auto repeat(11, auto);
   gap: 2px 10px;
-  justify-content: end;
+  align-items: center;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 .frame__demos-label {
@@ -154,27 +161,11 @@ ul {
 }
 
 .frame__demo--current {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.frame__credits,
-.frame #cdawrap {
-  align-self: end;
-  opacity: var(--foot, 1);
-}
-
-.frame__credits {
-  grid-area: credits;
-}
-
-.frame__credits a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.frame__credits a:hover {
-  opacity: 0.6;
+  margin: 0 -4px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
 }
 
 .frame #cdawrap {
@@ -184,17 +175,12 @@ ul {
   text-align: right;
 }
 
-.frame--clear .frame__credits,
-.frame--clear #cdawrap {
-  visibility: hidden;
-}
-
 /* The studio page ------------------------------------------------------------- */
 
 /* The hero: a photograph in daylight across the whole screen, each page's
-   chosen for its seam, and the studio's name on it in white. Its lower
-   quarter is kept clear: that's where the seams work. Dark until the
-   photograph is in. */
+   chosen for its seam, and the studio's name on it in white, in the middle
+   of the screen. Below the name it's kept clear: that's where the seams
+   work. Dark until the photograph is in. */
 .hero {
   position: relative;
   height: var(--hero);
@@ -205,7 +191,7 @@ ul {
 
 /* The photograph is drawn as it is (shaders draw it the same, glsl.js,
    photo()). Its box can reach below the hero by --bleed, cropped by it, so
-   a seam can show the rest of the picture under the page (Ink, Surface). */
+   a seam can show the rest of the picture under the page (Ink). */
 .hero__img {
   position: absolute;
   inset: 0 0 auto;
@@ -244,32 +230,62 @@ ul {
   grid-template-columns: repeat(8, minmax(0, 1fr));
   grid-template-rows: 1fr auto 1fr;
   column-gap: var(--gutter);
-  padding: 120px var(--gutter) 28vh;
+  padding: 120px var(--gutter); /* the same above and below, so the name is in the middle */
 }
 
 .hero__title {
   grid-column: 1 / -1;
   grid-row: 2;
-  font-size: clamp(64px, 19vw, 300px);
+  align-self: last baseline;
+  font-size: clamp(56px, 14vw, 220px);
   font-weight: 500;
   line-height: 0.8;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.07em;
 }
 
-.hero__meta {
-  grid-column: 1 / 3;
-  grid-row: 1;
-  align-self: end;
-  padding-bottom: 24px;
+/* A Japanese character after the name (Mend's 金, gold): set in a typeface
+   that has it, untracked, and sized and raised so its ink is as tall as the
+   name's capitals and sits on their baseline (a Japanese character fills a
+   square that reaches below the baseline). */
+.hero__title [lang='ja'] {
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 0.85em;
+  letter-spacing: 0;
+  vertical-align: 0.036em;
 }
 
+/* Beside the name, on its baseline, so nothing sits below it. */
 .hero__note {
   grid-column: 7 / -1;
-  grid-row: 3;
+  grid-row: 2;
+  align-self: last baseline;
   justify-self: end;
-  padding-top: 24px;
   text-align: right;
   opacity: 0.75;
+}
+
+/* A cue to scroll, at the bottom of the hero, in the middle: a word over a
+   short line. index.js fades it out over the first few px of scroll,
+   before the seam comes up to it. */
+.hero__scroll {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--paper);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.hero__scroll::after {
+  content: '';
+  width: 1px;
+  height: 28px;
+  background: currentColor;
 }
 
 /* The seam: a box straddling the hero's bottom edge, `--above` into the
@@ -317,6 +333,21 @@ ul {
   grid-column: 3 / -1;
   font-size: clamp(20px, 2.2vw, 32px);
   line-height: 1.15;
+  letter-spacing: -0.035em;
+  word-spacing: 0.12em; /* the words, kept apart in capitals set this tight */
+}
+
+/* A letter a seam has drunk from (Roots, whose roots reach the first line):
+   its ink drawn off from the top down to --level, px down its box, leaving
+   it pale, and paler still as --dry goes from 0 to 1 (45% of its ink left,
+   down to 12%). Only while there's something drawn off, so untouched
+   letters are plain text. */
+.next__char--drunk {
+  --pale: color-mix(in srgb, var(--ink) calc(45% - 33% * var(--dry, 0)), var(--paper));
+  background: linear-gradient(var(--pale) var(--level), var(--ink) var(--level));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* The latest work: six 4:5 photographs in a tight row, captions under
@@ -362,10 +393,32 @@ ul {
   opacity: 0.5;
 }
 
+/* The footer: the studio's email, the demo's credits in the middle, the
+   section's name. */
 .next__foot {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 8px var(--gutter);
+  align-items: baseline;
   margin-top: 24vh;
+}
+
+.next__foot > :last-child {
+  justify-self: end;
+}
+
+.next__credits {
+  text-align: center;
+  opacity: 0.6;
+}
+
+.next__credits a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.next__credits a:hover {
+  opacity: 0.6;
 }
 
 /* Small screens ------------------------------------------------------------ */
@@ -377,8 +430,12 @@ ul {
 
   .frame {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, auto) 1fr auto auto;
-    grid-template-areas: 'title' 'links' 'tags' 'demos' '.' 'credits' 'sponsor';
+    grid-template-rows: repeat(5, auto) 1fr;
+    grid-template-areas: 'title' 'demos' 'links' 'tags' 'sponsor' '.';
+  }
+
+  .frame__demos {
+    margin-top: 4px;
   }
 
   .frame #cdawrap {
@@ -386,20 +443,27 @@ ul {
     text-align: left;
   }
 
-  .frame__demos {
-    justify-content: start;
-  }
-
   .hero__content {
-    padding-top: 180px;
+    padding-block: 180px;
   }
 
-  .hero__meta {
-    grid-column: 1 / -1;
-  }
-
+  /* The name fills the width: the note goes under it. */
   .hero__note {
     grid-column: 1 / -1;
+    grid-row: 3;
+    align-self: start;
+    padding-top: 24px;
+  }
+
+  /* The credits above the email and the section's name. */
+  .next__foot {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .next__credits {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    margin-bottom: 16px;
   }
 
   .next__intro {

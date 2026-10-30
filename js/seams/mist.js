@@ -1,10 +1,11 @@
 // 07 Mist
 //
-// The white page rises into the hero's sky as cloud. As the seam comes up
-// the screen, the edge softens into a bank of mist, white where it meets
-// the page, and wisps of it climb into the sky in three layers, the
-// nearer ones larger and faster, the farther ones finer, curling as they
-// go. It starts as a faint haze and builds slowly: the higher the seam,
+// The white page rises into the hero's photograph as sea fog, up towards
+// the fog nets on its ridge. As the seam comes up the screen, the edge
+// softens into a bank of mist, white where it meets the page, and wisps of
+// it climb into the sky in three layers, the nearer ones larger and
+// faster, the farther ones finer, curling as they go. It starts as a faint
+// haze and builds slowly: the higher the seam,
 // the higher and thicker the mist. It drifts up only while the page
 // scrolls; when it stops, the mist hangs where it is. Scroll back to the
 // top and it clears, leaving the plain edge.

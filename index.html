@@ -4,30 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Seam Transitions | Demo 1 | Codrops</title>
-    <meta name="description" content="As the page scrolls up, a photograph of misty pines bleeds into it like ink into wet paper, showing more forest under the page. A WebGL scroll transition with GSAP." />
+    <meta name="description" content="A cleared hillside grows back: misty pine forest bleeds down into the white page like ink, showing more forest as it scrolls. A WebGL scroll transition with GSAP." />
     <meta name="keywords" content="ink effect, image reveal, scroll transition, section transition, scroll animation, WebGL, GLSL shaders, GSAP, ScrollTrigger" />
     <link rel="canonical" href="https://tympanus.net/Demos/SeamTransitions/" />
     <meta name="theme-color" content="#111" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Codrops" />
     <meta property="og:title" content="Seam Transitions | Demo 1 | Codrops" />
-    <meta property="og:description" content="As the page scrolls up, a photograph of misty pines bleeds into it like ink into wet paper, showing more forest under the page. A WebGL scroll transition with GSAP." />
+    <meta property="og:description" content="A cleared hillside grows back: misty pine forest bleeds down into the white page like ink, showing more forest as it scrolls. A WebGL scroll transition with GSAP." />
     <meta property="og:url" content="https://tympanus.net/Demos/SeamTransitions/" />
     <meta property="og:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <meta property="og:image:alt" content="Seam Transitions: misty pines bleeding like ink into the white page that scrolls up over them, under the name Canopy" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@codrops" />
     <meta name="twitter:title" content="Seam Transitions | Demo 1 | Codrops" />
-    <meta name="twitter:description" content="As the page scrolls up, a photograph of misty pines bleeds into it like ink into wet paper, showing more forest under the page. A WebGL scroll transition with GSAP." />
+    <meta name="twitter:description" content="A cleared hillside grows back: misty pine forest bleeds down into the white page like ink, showing more forest as it scrolls. A WebGL scroll transition with GSAP." />
     <meta name="twitter:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
-    <meta name="twitter:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <meta name="twitter:image:alt" content="Seam Transitions: misty pines bleeding like ink into the white page that scrolls up over them, under the name Canopy" />
     <link rel="icon" type="image/svg+xml" href="https://tympanus.net/favicon/favicon.svg" />
     <link rel="shortcut icon" href="https://tympanus.net/favicon/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&display=swap" />
     <link rel="stylesheet" type="text/css" href="css/base.css" />
     <script>
       document.documentElement.className = 'js';
@@ -63,51 +63,53 @@
               <a class="frame__demo" href="index8.html">08</a>
               <a class="frame__demo" href="index9.html">09</a>
               <a class="frame__demo" href="index10.html">10</a>
+              <a class="frame__demo" href="index11.html">11</a>
             </nav>
-            <p class="frame__credits">Inspired by <a href="https://mosaic.flabbergast.agency/">Mosaic</a> and <a href="https://tympanus.net/codrops/?p=124140">Jesper Landberg</a></p>
           </header>
           <img class="hero__img" src="img/hero-ink.jpg" width="1376" height="768" alt="A misty mountain ridge, dark pines fading up into pale fog" />
           <div class="hero__content">
-            <p class="hero__meta">Architecture &amp; landscape<br />Lisbon · Oslo</p>
-            <h2 class="hero__title">Strata</h2>
-            <p class="hero__note">Selected work<br />2019 — 2026</p>
+            <h2 class="hero__title">Canopy</h2>
+            <p class="hero__note">Native forest<br />Since 2011</p>
           </div>
+          <p class="hero__scroll" aria-hidden="true">Scroll</p>
+
         </section>
         <div class="seam" aria-hidden="true"></div>
         <section class="next">
           <div class="next__intro">
-            <p class="next__label">(01) Studio</p>
-            <p class="next__text">We design buildings that settle into their ground: houses, chapels, baths and schools, cut from the stone, timber and light of their place.</p>
+            <p class="next__label">(01) Rewilding</p>
+            <p class="next__text">We bring native forest back to hills cleared long ago: seed gathered nearby, planted by volunteers, then left to grow wild.</p>
           </div>
           <ul class="projects">
             <li>
-              <img src="img/project-1.jpg" width="896" height="1200" alt="A small brick house with a vaulted roof in a dry meadow" />
-              <p>Kiln House <span>2025</span></p>
+              <img src="img/canopy-1.jpg" width="896" height="1200" alt="Young birch and pine regrowing on a misty hillside that was once bare moorland" />
+              <p>Birch Hollow <span>2012</span></p>
             </li>
             <li>
-              <img src="img/project-2.jpg" width="896" height="1200" alt="A timber pavilion on slender columns among tall grasses" />
-              <p>Sorrel Pavilion <span>2024</span></p>
+              <img src="img/canopy-2.jpg" width="896" height="1200" alt="Pine saplings in tree guards across a heather hillside above a grey loch" />
+              <p>Upper Loch <span>2014</span></p>
             </li>
             <li>
-              <img src="img/project-3.jpg" width="896" height="1200" alt="A basalt chapel on a pale gravel hill" />
-              <p>Basalt Chapel <span>2024</span></p>
+              <img src="img/canopy-3.jpg" width="896" height="1200" alt="A rowan with red berries among young pines on a misty ridge" />
+              <p>Rowan Ridge <span>2016</span></p>
             </li>
             <li>
-              <img src="img/project-4.jpg" width="896" height="1200" alt="Sea baths: a concrete deck and steps down into a tidal pool" />
-              <p>Harbour Baths <span>2023</span></p>
+              <img src="img/canopy-4.jpg" width="896" height="1200" alt="A young native pinewood with heather and blaeberry beneath the trees" />
+              <p>Red Pine Glen <span>2018</span></p>
             </li>
             <li>
-              <img src="img/project-5.jpg" width="896" height="1200" alt="A whitewashed courtyard around an old olive tree" />
-              <p>Olive Court <span>2022</span></p>
+              <img src="img/canopy-5.jpg" width="896" height="1200" alt="Rows of pine and birch seedlings in trays under a polytunnel" />
+              <p>Seed Store <span>2021</span></p>
             </li>
             <li>
-              <img src="img/project-6.jpg" width="896" height="1200" alt="A long low brick and timber school on flat green land" />
-              <p>Lowland School <span>2021</span></p>
+              <img src="img/canopy-6.jpg" width="896" height="1200" alt="A stream winding through a newly planted valley, bare hills behind" />
+              <p>Moss Burn <span>2024</span></p>
             </li>
           </ul>
           <footer class="next__foot">
-            <a href="mailto:studio@strata.example">studio@strata.example</a>
-            <span>(02) Projects</span>
+            <a href="mailto:hello@canopy.example">hello@canopy.example</a>
+            <p class="next__credits">Inspired by <a href="https://mosaic.flabbergast.agency/">Mosaic</a> and Jesper Landberg’s <a href="https://tympanus.net/Demos/PaperDrops/">demo</a> on Codrops</p>
+            <span>(02) Planting</span>
           </footer>
         </section>
       </main>

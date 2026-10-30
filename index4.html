@@ -4,30 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Seam Transitions | Demo 4 | Codrops</title>
-    <meta name="description" content="The bottom of a library photograph is set in type, each character as dense as the picture is dark, climbing as the page scrolls up. A WebGL scroll transition with GSAP." />
-    <meta name="keywords" content="ASCII art, text effect, scroll transition, section transition, scroll animation, WebGL, GLSL shaders, GSAP, ScrollTrigger" />
+    <meta name="description" content="A library photograph is set as a Walt Whitman poem in its own colours, the letters scrambling as the page scrolls up over it. A WebGL scroll transition with GSAP." />
+    <meta name="keywords" content="kinetic typography, text effect, poetry, scroll transition, section transition, scroll animation, WebGL, GLSL shaders, GSAP, ScrollTrigger" />
     <link rel="canonical" href="https://tympanus.net/Demos/SeamTransitions/index4.html" />
     <meta name="theme-color" content="#111" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Codrops" />
     <meta property="og:title" content="Seam Transitions | Demo 4 | Codrops" />
-    <meta property="og:description" content="The bottom of a library photograph is set in type, each character as dense as the picture is dark, climbing as the page scrolls up. A WebGL scroll transition with GSAP." />
+    <meta property="og:description" content="A library photograph is set as a Walt Whitman poem in its own colours, the letters scrambling as the page scrolls up over it. A WebGL scroll transition with GSAP." />
     <meta property="og:url" content="https://tympanus.net/Demos/SeamTransitions/index4.html" />
     <meta property="og:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <meta property="og:image:alt" content="Seam Transitions: misty pines bleeding like ink into the white page that scrolls up over them, under the name Canopy" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@codrops" />
     <meta name="twitter:title" content="Seam Transitions | Demo 4 | Codrops" />
-    <meta name="twitter:description" content="The bottom of a library photograph is set in type, each character as dense as the picture is dark, climbing as the page scrolls up. A WebGL scroll transition with GSAP." />
+    <meta name="twitter:description" content="A library photograph is set as a Walt Whitman poem in its own colours, the letters scrambling as the page scrolls up over it. A WebGL scroll transition with GSAP." />
     <meta name="twitter:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
-    <meta name="twitter:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <meta name="twitter:image:alt" content="Seam Transitions: misty pines bleeding like ink into the white page that scrolls up over them, under the name Canopy" />
     <link rel="icon" type="image/svg+xml" href="https://tympanus.net/favicon/favicon.svg" />
     <link rel="shortcut icon" href="https://tympanus.net/favicon/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&family=Kode+Mono&display=swap" />
     <link rel="stylesheet" type="text/css" href="css/base.css" />
     <script>
       document.documentElement.className = 'js';
@@ -63,51 +63,53 @@
               <a class="frame__demo" href="index8.html">08</a>
               <a class="frame__demo" href="index9.html">09</a>
               <a class="frame__demo" href="index10.html">10</a>
+              <a class="frame__demo" href="index11.html">11</a>
             </nav>
-            <p class="frame__credits">Inspired by <a href="https://mosaic.flabbergast.agency/">Mosaic</a> and <a href="https://tympanus.net/codrops/?p=124140">Jesper Landberg</a></p>
           </header>
           <img class="hero__img" src="img/hero-typeset.jpg" width="1376" height="768" alt="A library reading room, tall windows over a pale wall and long rows of bookshelves" />
           <div class="hero__content">
-            <p class="hero__meta">Architecture &amp; landscape<br />Lisbon · Oslo</p>
-            <h2 class="hero__title">Strata</h2>
-            <p class="hero__note">Selected work<br />2019 — 2026</p>
+            <h2 class="hero__title">Stacks</h2>
+            <p class="hero__note">Public library<br />Since 1931</p>
           </div>
+          <p class="hero__scroll" aria-hidden="true">Scroll</p>
+
         </section>
         <div class="seam" aria-hidden="true"></div>
         <section class="next">
           <div class="next__intro">
-            <p class="next__label">(01) Studio</p>
-            <p class="next__text">We design buildings that settle into their ground: houses, chapels, baths and schools, cut from the stone, timber and light of their place.</p>
+            <p class="next__label">(01) Library</p>
+            <p class="next__text">A public library for the whole city: a million books, long tables and quiet rooms, open every day until ten.</p>
           </div>
           <ul class="projects">
             <li>
-              <img src="img/project-1.jpg" width="896" height="1200" alt="A small brick house with a vaulted roof in a dry meadow" />
-              <p>Kiln House <span>2025</span></p>
+              <img src="img/stacks-1.jpg" width="896" height="1200" alt="The stone entrance of a 1930s library, tall windows over wide steps" />
+              <p>Central Library <span>1931</span></p>
             </li>
             <li>
-              <img src="img/project-2.jpg" width="896" height="1200" alt="A timber pavilion on slender columns among tall grasses" />
-              <p>Sorrel Pavilion <span>2024</span></p>
+              <img src="img/stacks-2.jpg" width="896" height="1200" alt="A long modernist reading room with floor-to-ceiling windows onto the water" />
+              <p>Harbour Branch <span>1964</span></p>
             </li>
             <li>
-              <img src="img/project-3.jpg" width="896" height="1200" alt="A basalt chapel on a pale gravel hill" />
-              <p>Basalt Chapel <span>2024</span></p>
+              <img src="img/stacks-3.jpg" width="896" height="1200" alt="A small timber reading room with a long table and a window onto a garden" />
+              <p>Garden Reading Room <span>2019</span></p>
             </li>
             <li>
-              <img src="img/project-4.jpg" width="896" height="1200" alt="Sea baths: a concrete deck and steps down into a tidal pool" />
-              <p>Harbour Baths <span>2023</span></p>
+              <img src="img/stacks-4.jpg" width="896" height="1200" alt="A calm children’s library of low birch shelves and a cushioned reading nook" />
+              <p>Children’s Library <span>2022</span></p>
             </li>
             <li>
-              <img src="img/project-5.jpg" width="896" height="1200" alt="A whitewashed courtyard around an old olive tree" />
-              <p>Olive Court <span>2022</span></p>
+              <img src="img/stacks-5.jpg" width="896" height="1200" alt="A concrete library on a hillside with a planted reading terrace" />
+              <p>Hill Branch <span>1978</span></p>
             </li>
             <li>
-              <img src="img/project-6.jpg" width="896" height="1200" alt="A long low brick and timber school on flat green land" />
-              <p>Lowland School <span>2021</span></p>
+              <img src="img/stacks-6.jpg" width="896" height="1200" alt="A map room under a skylight, wooden plan chests and a long table" />
+              <p>Map Room <span>1952</span></p>
             </li>
           </ul>
           <footer class="next__foot">
-            <a href="mailto:studio@strata.example">studio@strata.example</a>
-            <span>(02) Projects</span>
+            <a href="mailto:hello@stacks.example">hello@stacks.example</a>
+            <p class="next__credits">Inspired by <a href="https://mosaic.flabbergast.agency/">Mosaic</a> and Jesper Landberg’s <a href="https://tympanus.net/Demos/PaperDrops/">demo</a> on Codrops</p>
+            <span>(02) Branches</span>
           </footer>
         </section>
       </main>

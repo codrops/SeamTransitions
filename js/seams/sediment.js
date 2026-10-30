@@ -113,8 +113,11 @@ export default function sediment(seam) {
     // random), so the slopes come out uneven. Worked out in order, so the
     // first to fall lie lowest.
     const height = new Array(cols).fill(0);
+    // They come loose evenly over the scroll, until the box's bottom nears
+    // the top of the screen, so the sand keeps pouring for as long as any of
+    // it is in view.
     falling.forEach((grain, i) => {
-      grain.at = innerHeight * (0.04 + (0.86 * i) / (falling.length - 1));
+      grain.at = (innerHeight + below) * (0.04 + (0.86 * i) / (falling.length - 1));
       grain.left = grain.col * GRAIN;
       grain.top = edge - (grain.row + 1) * GRAIN;
 

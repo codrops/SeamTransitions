@@ -1,19 +1,23 @@
 // 08 Craquelure
 //
-// The bottom of the photograph dries out and cracks, like clay in the sun
-// or the varnish on an old painting. As the seam comes up the screen, the
-// cracks open from the edge upwards, splitting the photograph into plates;
-// they widen as each plate dries and shrinks, turns a little and curls at
-// its rim, casting a soft shadow on the white page showing through, until
-// the plates nearest the page have shrunk away to nothing. Scroll back and
-// the plates grow together again until the photograph is whole.
+// The bottom of the photograph breaks, like a glazed ceramic, along seams
+// of gold, as a kintsugi repair would show them. As the seam comes up the
+// screen, the cracks open from the edge upwards, splitting the photograph
+// into pieces, each broken edge lined with gold; they widen as each piece
+// shrinks a little, turns and curls at its rim, casting a soft shadow on
+// the white page showing through, but only so far (GAP): the pieces hold
+// together. (With small pieces, a small CELL, the cracks open until those
+// nearest the page have shrunk away to nothing, like crazed varnish.)
+// Scroll back and the pieces grow together again until the photograph is
+// whole.
 //
 // It stays in the empty space around the seam: the cracks reach no higher
 // than just below the hero's last line of text.
 
 import Strip from '../gl/Strip.js';
 
-const CELL = 25; // a plate's size, px; the cracks and their wander scale with it
+const CELL = 140; // a piece's size, px; the cracks and their wander scale with it
+const GAP = 14; // the widest a crack opens, px: bigger pieces stay together, held by their gold seams
 
 export default function craquelure(seam) {
   const strip = new Strip(seam, {
@@ -22,6 +26,7 @@ export default function craquelure(seam) {
     dpr: 2,
     fragment: /* glsl */ `
       const float CELL = ${CELL.toFixed(1)};
+      const float GAP = ${GAP.toFixed(1)};
 
       vec2 jitter(vec2 c) {
         return 0.1 + 0.8 * vec2(hash(c), hash(c + 17.3));
@@ -79,19 +84,29 @@ export default function craquelure(seam) {
 
         // The crack around it widens until the plate is gone; the plate
         // shrinks and turns about its centre as it dries.
-        float crack = dry * dry * 0.52 * CELL;
-        float turn = (id - 0.5) * 0.5 * dry;
+        // (Small plates shrink away to nothing; big ones only as far as GAP
+        // lets their cracks open, so they hold together.)
+        float open = min(0.52 * CELL, GAP);
+        float give = open / (0.52 * CELL);
+        float crack = dry * dry * open;
+        float turn = (id - 0.5) * 0.5 * dry * give;
         mat2 r = mat2(cos(turn), sin(turn), -sin(turn), cos(turn));
-        vec2 q = centre + r * (px + wander - centre) / (1.0 - 0.3 * dry) - wander;
+        vec2 q = centre + r * (px + wander - centre) / (1.0 - 0.3 * dry * give) - wander;
 
-        // The plate: the photograph (or the page, past the edge), lighter
+        // The plate: the photograph (the page, below the edge), lighter
         // at its curled rim. The crack: the page, shadowed close to the
-        // plates.
+        // plates. Along the plate's broken edge, a line of gold, paler and
+        // deeper where the light catches it, once the crack has opened. All
+        // of it on the photograph only: the gold and the shadows stop at its
+        // edge.
         float on = smoothstep(crack - 0.75, crack + 0.75, border);
-        vec3 face = q.y < uEdge ? photo(q) : uPaper;
+        vec3 face = px.y < uEdge ? photo(q) : uPaper; // a piece shows the photograph all the way to the edge
         face = mix(face, uPaper, 0.18 * smoothstep(crack + 5.0, crack, border) * dry);
         vec3 gap = uPaper * (1.0 - 0.12 * smoothstep(crack - 6.0, crack, border));
-        outColor = vec4(mix(gap, face, on), 1.0);
+        float edge = (1.0 - smoothstep(1.0, 2.4, abs(border - crack))) * smoothstep(0.0, 0.08, dry);
+        vec3 gold = mix(vec3(0.72, 0.55, 0.24), vec3(0.95, 0.82, 0.5), noise(q / 14.0));
+        outColor = vec4(mix(mix(gap, face, on), gold, edge), 1.0);
+        if (px.y >= uEdge) outColor = vec4(uPaper, 1.0); // below the edge, the page's own white, nothing on it
       }`,
   });
 

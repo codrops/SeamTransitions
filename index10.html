@@ -4,30 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Seam Transitions | Demo 10 | Codrops</title>
-    <meta name="description" content="A sandstone cliff wears away like an hourglass, its grains pouring down the page into layered dunes. A canvas scroll transition with GSAP and Physics2DPlugin." />
+    <meta name="description" content="An upland hill crumbles grain by grain into spoil heaps as the page scrolls up over it. A canvas scroll transition with GSAP and Physics2DPlugin." />
     <meta name="keywords" content="sand effect, particles, Physics2DPlugin, scroll transition, section transition, scroll animation, canvas, GSAP, ScrollTrigger" />
     <link rel="canonical" href="https://tympanus.net/Demos/SeamTransitions/index10.html" />
     <meta name="theme-color" content="#111" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Codrops" />
     <meta property="og:title" content="Seam Transitions | Demo 10 | Codrops" />
-    <meta property="og:description" content="A sandstone cliff wears away like an hourglass, its grains pouring down the page into layered dunes. A canvas scroll transition with GSAP and Physics2DPlugin." />
+    <meta property="og:description" content="An upland hill crumbles grain by grain into spoil heaps as the page scrolls up over it. A canvas scroll transition with GSAP and Physics2DPlugin." />
     <meta property="og:url" content="https://tympanus.net/Demos/SeamTransitions/index10.html" />
     <meta property="og:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <meta property="og:image:alt" content="Seam Transitions: misty pines bleeding like ink into the white page that scrolls up over them, under the name Canopy" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@codrops" />
     <meta name="twitter:title" content="Seam Transitions | Demo 10 | Codrops" />
-    <meta name="twitter:description" content="A sandstone cliff wears away like an hourglass, its grains pouring down the page into layered dunes. A canvas scroll transition with GSAP and Physics2DPlugin." />
+    <meta name="twitter:description" content="An upland hill crumbles grain by grain into spoil heaps as the page scrolls up over it. A canvas scroll transition with GSAP and Physics2DPlugin." />
     <meta name="twitter:image" content="https://tympanus.net/Demos/SeamTransitions/og-image.jpg" />
-    <meta name="twitter:image:alt" content="Seam Transitions: a photograph of misty pines bleeding like ink into the white page that scrolls up over it, under the studio name Strata" />
+    <meta name="twitter:image:alt" content="Seam Transitions: misty pines bleeding like ink into the white page that scrolls up over them, under the name Canopy" />
     <link rel="icon" type="image/svg+xml" href="https://tympanus.net/favicon/favicon.svg" />
     <link rel="shortcut icon" href="https://tympanus.net/favicon/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&display=swap" />
     <link rel="stylesheet" type="text/css" href="css/base.css" />
     <script>
       document.documentElement.className = 'js';
@@ -63,51 +63,53 @@
               <a class="frame__demo" href="index8.html">08</a>
               <a class="frame__demo" href="index9.html">09</a>
               <span class="frame__demo frame__demo--current">10</span>
+              <a class="frame__demo" href="index11.html">11</a>
             </nav>
-            <p class="frame__credits">Inspired by <a href="https://mosaic.flabbergast.agency/">Mosaic</a> and <a href="https://tympanus.net/codrops/?p=124140">Jesper Landberg</a></p>
           </header>
-          <img class="hero__img" src="img/hero-sediment.jpg" width="1376" height="768" alt="A concrete house set into a cliff of banded sandstone" />
+          <img class="hero__img" src="img/hero-sediment.jpg" width="1376" height="768" alt="An upland hill of granite outcrops and heather above green meadows divided by stone walls" />
           <div class="hero__content">
-            <p class="hero__meta">Architecture &amp; landscape<br />Lisbon · Oslo</p>
-            <h2 class="hero__title">Strata</h2>
-            <p class="hero__note">Selected work<br />2019 — 2026</p>
+            <h2 class="hero__title">Baldio</h2>
+            <p class="hero__note">Common land<br />Four centuries</p>
           </div>
+          <p class="hero__scroll" aria-hidden="true">Scroll</p>
+
         </section>
         <div class="seam" aria-hidden="true"></div>
         <section class="next">
           <div class="next__intro">
-            <p class="next__label">(01) Studio</p>
-            <p class="next__text">We design buildings that settle into their ground: houses, chapels, baths and schools, cut from the stone, timber and light of their place.</p>
+            <p class="next__label">(01) The hill</p>
+            <p class="next__text">For four hundred years this hill has been grazed, farmed and shared by the villages around it. A company wants to dig it out for lithium. We want it to stay a hill.</p>
           </div>
           <ul class="projects">
             <li>
-              <img src="img/project-1.jpg" width="896" height="1200" alt="A small brick house with a vaulted roof in a dry meadow" />
-              <p>Kiln House <span>2025</span></p>
+              <img src="img/baldio-1.jpg" width="896" height="1200" alt="A green meadow enclosed by stone walls, long-horned cattle grazing below granite hills" />
+              <p>Lameiro do Fundo <span>Meadow</span></p>
             </li>
             <li>
-              <img src="img/project-2.jpg" width="896" height="1200" alt="A timber pavilion on slender columns among tall grasses" />
-              <p>Sorrel Pavilion <span>2024</span></p>
+              <img src="img/baldio-2.jpg" width="896" height="1200" alt="A granite spring trough with clear water running into it" />
+              <p>Fonte da Laje <span>Spring</span></p>
             </li>
             <li>
-              <img src="img/project-3.jpg" width="896" height="1200" alt="A basalt chapel on a pale gravel hill" />
-              <p>Basalt Chapel <span>2024</span></p>
+              <img src="img/baldio-3.jpg" width="896" height="1200" alt="An old chestnut grove of huge gnarled trunks on a slope" />
+              <p>Souto Velho <span>Chestnuts</span></p>
             </li>
             <li>
-              <img src="img/project-4.jpg" width="896" height="1200" alt="Sea baths: a concrete deck and steps down into a tidal pool" />
-              <p>Harbour Baths <span>2023</span></p>
+              <img src="img/baldio-4.jpg" width="896" height="1200" alt="A small field of rye on a terrace below granite outcrops" />
+              <p>Leira Alta <span>Rye</span></p>
             </li>
             <li>
-              <img src="img/project-5.jpg" width="896" height="1200" alt="A whitewashed courtyard around an old olive tree" />
-              <p>Olive Court <span>2022</span></p>
+              <img src="img/baldio-5.jpg" width="896" height="1200" alt="Stone houses with slate roofs along a narrow village street" />
+              <p>Aldeia <span>Village</span></p>
             </li>
             <li>
-              <img src="img/project-6.jpg" width="896" height="1200" alt="A long low brick and timber school on flat green land" />
-              <p>Lowland School <span>2021</span></p>
+              <img src="img/baldio-6.jpg" width="896" height="1200" alt="The village’s granite bread-oven house, firewood stacked by its door" />
+              <p>Forno do Povo <span>Oven</span></p>
             </li>
           </ul>
           <footer class="next__foot">
-            <a href="mailto:studio@strata.example">studio@strata.example</a>
-            <span>(02) Projects</span>
+            <a href="mailto:contact@baldio.example">contact@baldio.example</a>
+            <p class="next__credits">Inspired by <a href="https://mosaic.flabbergast.agency/">Mosaic</a> and Jesper Landberg’s <a href="https://tympanus.net/Demos/PaperDrops/">demo</a> on Codrops</p>
+            <span>(02) What’s here</span>
           </footer>
         </section>
       </main>
